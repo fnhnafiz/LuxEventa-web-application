@@ -6,7 +6,7 @@ function MainLayout() {
   return (
     <div>
       <Navbar />
-      <main className="">
+      <main className="min-h-[calc(100vh-250px)]">
         <Outlet />
       </main>
       <Footer />
