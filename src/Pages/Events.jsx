@@ -4,7 +4,7 @@ function Events() {
   return (
     <div className="pt-20">
       <h1 className="text-5xl font-bold text-center">Event page</h1>
-      <p>
+      <p className="text-center my-5">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Totam expedita
         illum commodi eos qui voluptatibus cupiditate excepturi tenetur magnam,
         dicta quos non voluptatem et repellendus modi saepe aliquam sunt nulla
