@@ -9,12 +9,21 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import useAxiosPublic from "../Hooks/axiosPublic";
 
 function AddEvents() {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // handle form logic here (e.g., send to server)
-    console.log("Event Submitted");
+  const { register, handleSubmit, reset } = useForm();
+
+  const axiosPublic = useAxiosPublic();
+  const onSubmit = async (data) => {
+    try {
+      const response = await axiosPublic.post("/add-event", data);
+      console.log("add event", response.data);
+      reset();
+    } catch (error) {
+      console.log("failed to add event", error);
+    }
   };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
@@ -25,7 +34,7 @@ function AddEvents() {
           </CardTitle>
         </CardHeader>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
             {/* Event Title */}
             <div className="grid gap-2">
@@ -33,7 +42,7 @@ function AddEvents() {
               <Input
                 id="title"
                 type="text"
-                required
+                {...register("title", { required: "Event title is required" })}
                 placeholder="Enter event title"
               />
             </div>

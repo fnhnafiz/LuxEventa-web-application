@@ -193,7 +193,7 @@ const Navbar = () => {
     // </div>
     <div
       className={`w-full z-50 fixed top-0 ${
-        color || pathname !== "/" ? "bg-white shadow text-black" : "text-white"
+        color || pathname !== "/" ? "bg-white shadow text-black " : "text-white"
       } transition duration-300`}
     >
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center relative">
@@ -267,7 +267,7 @@ const Navbar = () => {
               <Button className="bg-red-500 text-white">Sign In</Button>
             </Link>
           ) : (
-            <DropdownMenu>
+            <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
                 <img
                   src={user?.photoURL}
