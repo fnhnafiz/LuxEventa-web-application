@@ -53,7 +53,9 @@ function AddEvents() {
               <Input
                 id="organizer"
                 type="text"
-                required
+                {...register("organizer", {
+                  required: "Organizer name is required",
+                })}
                 placeholder="Posted by"
               />
             </div>
@@ -61,7 +63,13 @@ function AddEvents() {
             {/* Date and Time */}
             <div className="grid gap-2">
               <Label htmlFor="datetime">Date & Time</Label>
-              <Input id="datetime" type="datetime-local" required />
+              <Input
+                id="datetime"
+                type="datetime-local"
+                {...register("datetime", {
+                  required: "Date & time is required",
+                })}
+              />
             </div>
 
             {/* Location */}
@@ -70,7 +78,7 @@ function AddEvents() {
               <Input
                 id="location"
                 type="text"
-                required
+                {...register("location", { required: "Location is required" })}
                 placeholder="Event location"
               />
             </div>
@@ -80,7 +88,9 @@ function AddEvents() {
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
-                required
+                {...register("description", {
+                  required: "Description is required",
+                })}
                 placeholder="Event details..."
               />
             </div>
@@ -93,7 +103,10 @@ function AddEvents() {
                 type="number"
                 min="0"
                 defaultValue={0}
-                required
+                {...register("attendeeCount", {
+                  required: "Attendee count is required",
+                  min: { value: 0, message: "Cannot be less than 0" },
+                })}
               />
             </div>
           </CardContent>
