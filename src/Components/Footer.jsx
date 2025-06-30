@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="bg-orange-500 text-white pt-10 pb-6 mt-[1000px]">
+    <footer className="bg-orange-500 text-white pt-10 pb-6">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Left: About / Brand */}
         <div>
