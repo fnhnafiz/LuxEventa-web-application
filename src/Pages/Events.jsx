@@ -9,7 +9,29 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SlidersHorizontal } from "lucide-react";
 
+import useAxiosPublic from "../Hooks/axiosPublic";
+import { useQuery } from "@tanstack/react-query";
+
 function Events() {
+  const axiosPublic = useAxiosPublic();
+
+  const {
+    data: events = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["all-events"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/all-events");
+      return res.data;
+    },
+  });
+
+  if (isLoading) {
+    return <div className="text-center pt-20">Loading events...</div>;
+  }
+
+  // console.log(events);
   return (
     <div className="pt-20">
       <div>
@@ -77,13 +99,11 @@ function Events() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="grid grid-cols-3 gap-6 px-12">
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
+      {/* Events Card */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-12">
+        {events.map((event) => (
+          <EventCard key={event._id} event={event} refetch={refetch} />
+        ))}
       </div>
     </div>
   );

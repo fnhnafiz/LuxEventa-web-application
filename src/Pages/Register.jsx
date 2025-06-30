@@ -10,9 +10,33 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAxiosPublic from "../Hooks/axiosPublic";
+import { useForm } from "react-hook-form";
 
 function Register() {
+  const { register, handleSubmit, reset } = useForm();
+  const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
+  const onSubmit = async (data) => {
+    try {
+      const response = await axiosPublic.post("/add-user", data);
+
+      if (response.data.success) {
+        alert("Registration successful! Redirecting to login...");
+        reset();
+        navigate("/login");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        alert("User already exists. Please log in instead.");
+      } else {
+        console.log("Registration failed:", error);
+        alert("Something went wrong. Please try again.");
+      }
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <Card className="w-full max-w-sm">
@@ -24,7 +48,7 @@ function Register() {
         </CardHeader>
 
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-4">
               {/* Name */}
               <div className="grid gap-2">
@@ -33,7 +57,7 @@ function Register() {
                   id="name"
                   type="text"
                   placeholder="Your full name"
-                  required
+                  {...register("name", { required: "Name is required" })}
                 />
               </div>
 
@@ -44,7 +68,7 @@ function Register() {
                   id="email"
                   type="email"
                   placeholder="you@example.com"
-                  required
+                  {...register("email", { required: "Email is required" })}
                 />
               </div>
 
@@ -55,7 +79,9 @@ function Register() {
                   id="password"
                   type="password"
                   placeholder="Enter your password"
-                  required
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
                 />
               </div>
 
@@ -66,18 +92,17 @@ function Register() {
                   id="photo"
                   type="url"
                   placeholder="https://example.com/your-photo.jpg"
-                  required
+                  {...register("url", { required: "Photo URL is required" })}
                 />
               </div>
+
+              {/* ✅ Submit button now inside the form */}
+              <Button type="submit" className="w-full mt-4">
+                Register
+              </Button>
             </div>
           </form>
         </CardContent>
-
-        <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full">
-            Register
-          </Button>
-        </CardFooter>
 
         <CardAction className="mt-2 w-full flex justify-center">
           <p className="text-sm text-center">

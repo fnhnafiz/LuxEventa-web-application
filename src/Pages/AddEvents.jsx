@@ -96,7 +96,7 @@ function AddEvents() {
             </div>
 
             {/* Attendee Count */}
-            <div className="grid gap-2">
+            <div className="grid gap-2 hidden">
               <Label htmlFor="attendeeCount">Attendee Count</Label>
               <Input
                 id="attendeeCount"
