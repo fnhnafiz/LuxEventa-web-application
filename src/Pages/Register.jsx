@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../Hooks/axiosPublic";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 function Register() {
   const { register, handleSubmit, reset } = useForm();
@@ -23,13 +24,13 @@ function Register() {
       const response = await axiosPublic.post("/add-user", data);
 
       if (response.data.success) {
-        alert("Registration successful! Redirecting to login...");
+        toast.success("Registration successful! Redirecting to login...");
         reset();
         navigate("/login");
       }
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        alert("User already exists. Please log in instead.");
+        toast.error("User already exists. Please log in instead.");
       } else {
         console.log("Registration failed:", error);
         alert("Something went wrong. Please try again.");

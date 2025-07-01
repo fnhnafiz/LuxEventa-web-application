@@ -19,6 +19,9 @@
 .header-bg {
   background-color: rgba(0, 0, 0, 0.9);
 }
+body {
+  font-family: "Inter", sans-serif;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

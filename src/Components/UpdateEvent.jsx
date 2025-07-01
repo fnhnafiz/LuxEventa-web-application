@@ -11,19 +11,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import useAxiosPublic from "../Hooks/axiosPublic";
+import toast from "react-hot-toast";
 
-function UpdateEvent({ event }) {
+function UpdateEvent({ event, refetch }) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: event.title,
-    organizerName: event.organizerName,
     date: event.date,
     time: event.time,
     location: event.location,
     description: event.description,
-    attendeeCount: event.attendeeCount,
-    email: event.email, // read-only
+    email: event.organizerEmail,
   });
+  console.log(event._id);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,10 +33,22 @@ function UpdateEvent({ event }) {
       [name]: value,
     }));
   };
-  const handleUpdate = (e) => {
+  const axiosPublic = useAxiosPublic();
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    console.log("Updated Data:", formData);
-    setOpen(false);
+    try {
+      const response = await axiosPublic.put(
+        `/update-event/${event._id}`,
+        formData
+      );
+      toast.success("Update Success:", response.data);
+      setOpen(false);
+      refetch();
+    } catch (error) {
+      console.error("Update failed:", error);
+      toast.error("Update failed:", error);
+    }
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -57,17 +70,6 @@ function UpdateEvent({ event }) {
               id="title"
               name="title"
               value={formData.title}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="organizerName">Name</Label>
-            <Input
-              id="organizerName"
-              name="organizerName"
-              value={formData.organizerName}
               onChange={handleChange}
               required
             />
@@ -117,19 +119,6 @@ function UpdateEvent({ event }) {
               value={formData.description}
               onChange={handleChange}
               required
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="attendeeCount">Attendee Count</Label>
-            <Input
-              id="attendeeCount"
-              name="attendeeCount"
-              type="number"
-              value={formData.attendeeCount}
-              onChange={handleChange}
-              required
-              min="0"
             />
           </div>
 

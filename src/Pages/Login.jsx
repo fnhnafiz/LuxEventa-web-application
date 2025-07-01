@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../Hooks/axiosPublic";
+import toast from "react-hot-toast";
 
 function Login() {
   const { register, handleSubmit, reset } = useForm();
@@ -24,19 +25,19 @@ function Login() {
       const res = await axiosPublic.post("/login-user", data);
 
       if (res.data.success) {
-        alert("Login successful!");
+        toast.success("Login successful!");
         localStorage.setItem("user", JSON.stringify(res.data.user));
         reset();
         navigate("/");
       }
     } catch (error) {
       if (error.response?.status === 404) {
-        alert("User not found. Please register.");
+        toast.error("User not found. Please register.");
       } else if (error.response?.status === 401) {
-        alert("Incorrect password.");
+        toast.error("Incorrect password.");
       } else {
         console.error("Login failed", error);
-        alert("Something went wrong.");
+        toast.error("Something went wrong.");
       }
     }
   };
